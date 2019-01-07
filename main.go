@@ -102,7 +102,7 @@ type StreetAddresses struct {
 
 // functions to unmarshal JSON
 
-func getPosition (body []byte) (*ApiResponse, error) {
+func unmarshalPosition (body []byte) (*ApiResponse, error) {
 	var response = new(ApiResponse)
 	err := json.Unmarshal(body, &response)
 	if err != nil {
@@ -112,7 +112,7 @@ func getPosition (body []byte) (*ApiResponse, error) {
 	return response, err
 }
 
-func getAddress (body []byte) (*ApiResponse2, error) {
+func unmarshalAddress (body []byte) (*ApiResponse2, error) {
   var response = new (ApiResponse2)
   err := json.Unmarshal(body, &response)
   if err != nil {
