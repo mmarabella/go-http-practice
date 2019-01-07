@@ -11,21 +11,23 @@ import (
 func main() {
 	resp, err := http.Get("http://api.open-notify.org/iss-now.json")
 
-	if err != nil {
-		handleError (err)
+	if getPositionErr != nil {
+		handleError (getPositionErr)
 		os.Exit(1)
 
 	} else {
 		defer resp.Body.Close()
-		contents, err := ioutil.ReadAll(resp.Body)
+		contents, readPositionErr := ioutil.ReadAll(resp.Body)
 
-		if err != nil {
-			handleError (err)
+		if readPositionErr != nil {
+			handleError (readPositionErr)
 			os.Exit(1)
 		}
 
 		fmt.Println(string(contents))
-		responseStruct, err := getPosition([]byte(contents))
+
+    // TODO: handle error?
+		responseStruct, _ := unmarshalPosition([]byte(contents))
     fmt.Println("ISS POSITION")
 		fmt.Println("Latitude and Longitude:", responseStruct.Position)
 
@@ -33,28 +35,30 @@ func main() {
     lon := responseStruct.Position.Longitude
     resp2, err2 := http.Get("http://geoservices.tamu.edu/Services/ReverseGeocoding/WebService/v04_01/HTTP/default.aspx?apiKey=183d0aec4c0a4a8e8856e73adce9227d&version=4.10&lat=" + lat + "&lon=" + lon + "&format=json")
 
-    if err2 != nil {
-      handleError (err2)
+    if getCityErr != nil {
+      handleError (getCityErr)
       os.Exit(1)
 
     } else {
       defer resp.Body.Close()
-      contents2, err2 := ioutil.ReadAll(resp2.Body)
+      contents2, readCityErr := ioutil.ReadAll(resp2.Body)
 
-      if err2 != nil {
-        handleError (err2)
+      if readCityErr != nil {
+        handleError (readCityErr)
         os.Exit(1)
       }
 
       fmt.Println("CITY DATA")
-      responseStruct2, err2 := getAddress([]byte(contents2))
+
+      // TODO: handle error?
+      responseStruct2, _ := unmarshalAddress([]byte(contents2))
 
       if responseStruct2.QueryStatusCode == "Unknown" {
         fmt.Println("The space station is not currently over a US city")
       } else {
         fmt.Println("The space station is over", responseStruct2.StreetAddresses[0].City, responseStruct2.StreetAddresses[0].State)
       }
-    }
+    }*/
   }
 }
 
@@ -120,5 +124,5 @@ func getAddress (body []byte) (*ApiResponse2, error) {
 
 //TODO: better error handling function
 func handleError (err error) () {
-	fmt.Println("GET request returned an error:\n", err)
+	fmt.Println("Error encountered:\n", err)
 }
