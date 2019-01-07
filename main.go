@@ -8,8 +8,11 @@ import (
 	"encoding/json"
 )
 
+const issApiUrl string = "http://api.open-notify.org/iss-now.json"
+const geocodeApiUrl string = "http://geoservices.tamu.edu/Services/ReverseGeocoding/WebService/v04_01/HTTP/default.aspx?apiKey=183d0aec4c0a4a8e8856e73adce9227d&version=4.10&lat="
+
 func main() {
-	resp, err := http.Get("http://api.open-notify.org/iss-now.json")
+	resp, getPositionErr := http.Get(issApiUrl)
 
 	if getPositionErr != nil {
 		handleError (getPositionErr)
