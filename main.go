@@ -36,7 +36,7 @@ func main() {
 
     lat := responseStruct.Position.Latitude
     lon := responseStruct.Position.Longitude
-    resp2, err2 := http.Get("http://geoservices.tamu.edu/Services/ReverseGeocoding/WebService/v04_01/HTTP/default.aspx?apiKey=183d0aec4c0a4a8e8856e73adce9227d&version=4.10&lat=" + lat + "&lon=" + lon + "&format=json")
+    resp2, getCityErr := http.Get(geocodeApiUrl + lat + "&lon=" + lon + "&format=json")
 
     if getCityErr != nil {
       handleError (getCityErr)
@@ -61,7 +61,7 @@ func main() {
       } else {
         fmt.Println("The space station is over", responseStruct2.StreetAddresses[0].City, responseStruct2.StreetAddresses[0].State)
       }
-    }*/
+    }
   }
 }
 
